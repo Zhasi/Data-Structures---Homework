@@ -1,0 +1,276 @@
+#include <iostream>
+#include <cassert>
+using namespace std;
+
+struct Element
+{
+	int value;
+	Element* next;
+};
+
+class LinkedList
+{
+	Element* first;
+	Element* last;
+	int size;
+
+public:
+	LinkedList();
+	~LinkedList();
+	LinkedList(const LinkedList& l);
+	LinkedList& operator=(const LinkedList& l);
+	bool isEmpty() const;
+	int getSize() const;
+	int getFront() const;
+	int getBack() const;
+
+	void pushFront(int data);
+	void pushBack(int data);
+	void popFront();
+	void popBack();
+
+	void insertAtIndex(int idx, int data);
+	void popAtIndex(int idx);
+	int getAtIndex(int idx);
+
+	void clear();
+	void print();
+	void reverse();
+
+private:
+	void copy(const LinkedList& l);
+	void destroy();
+};
+
+LinkedList::LinkedList()
+{
+	first = last = NULL;
+	size = 0;
+}
+
+LinkedList::~LinkedList()
+{
+	destroy();
+}
+
+LinkedList::LinkedList(const LinkedList& l)
+{
+	copy(l);
+}
+
+LinkedList& LinkedList::operator=(const LinkedList& l)
+{
+	if (this != &l)
+	{
+		destroy();
+		copy(l);
+	}
+	return *this;
+}
+
+void LinkedList::copy(const LinkedList& l)
+{
+	Element* tmp = l.first;
+	while (tmp)
+	{
+		pushBack(tmp->value);
+		tmp = tmp->next;
+	}
+}
+
+void LinkedList::destroy()
+{
+	while (first)
+	{
+		popFront();
+	}
+}
+
+void LinkedList::clear()
+{
+	destroy();
+}
+
+int LinkedList::getSize() const
+{
+	return size;
+}
+
+bool LinkedList::isEmpty() const
+{
+	return size == 0;
+}
+
+void LinkedList::pushFront(int value)
+{
+	Element* el = new Element;
+	el->value = value;
+	el->next = first;
+	first = el;
+	size++;
+	if (size == 1)
+	{
+		last = first;
+	}
+}
+
+void LinkedList::pushBack(int value)
+{
+	Element* el = new Element;
+	el->value = value;
+	el->next = NULL;
+	if (size == 0)
+	{
+		first = last = el;
+	}
+	else
+	{
+		last->next = el;
+		last = el;
+	}
+	size++;
+}
+
+void LinkedList::popFront()
+{
+	assert(size >= 1);
+	Element* tmp = first;
+	first = first->next;
+	delete tmp;
+	size--;
+	if (size == 0)
+		last = NULL;
+}
+
+void LinkedList::popBack()
+{
+	assert(size >= 1);
+
+	if (size == 1)
+	{
+		delete first;
+		first = last = NULL;
+	}
+	else
+	{
+		Element* tmp = first;
+		while (tmp->next->next)
+		{
+			tmp = tmp->next;
+		}
+
+		delete last;
+		last = tmp;
+		last->next = NULL;
+	}
+	size--;
+}
+
+int LinkedList::getFront() const
+{
+	return first->value;
+}
+
+int LinkedList::getBack() const
+{
+	return last->value;
+}
+
+void LinkedList::print()
+{
+	Element* tmp = first;
+	while (tmp)
+	{
+		cout << tmp->value << " ";
+		tmp = tmp->next;
+	}
+	cout << endl;
+}
+
+void LinkedList::insertAtIndex(int idx, int value)
+{
+	Element* el = new Element;
+	el->value = value;
+	el->next = NULL;
+
+	if (idx == 0)
+	{
+		pushFront(value);
+	}
+	else if (idx == size)
+	{
+		pushBack(value);
+	}
+	else
+	{
+		Element* tmp = first;
+		for (int i = 0; i < idx - 1; i++)
+			tmp = tmp->next;
+
+		el->next = tmp->next;
+		tmp->next = el;
+		size++;
+	}
+}
+
+void LinkedList::popAtIndex(int idx)
+{
+	assert(size >= 1 && idx >= 0 && idx < size);
+	if (idx == 0)
+	{
+		popFront();
+	}
+	else if (idx == size - 1)
+	{
+		popBack();
+	}
+	else
+	{
+		Element* tmp = first;
+		for (int i = 0; i < idx - 1; i++)
+			tmp = tmp->next;
+
+		Element* tmp1 = tmp->next->next;
+		delete tmp->next;
+		tmp->next = tmp1;
+		size--;
+	}
+}
+
+int LinkedList::getAtIndex(int idx)
+{
+	assert(size >= 1 && idx >= 0 && idx < size);
+	Element* tmp = first;
+	for (int i = 0; i < idx; i++)
+		tmp = tmp->next;
+	return tmp->value;
+}
+
+void LinkedList::reverse()
+{
+
+	Element *p, *q, *curr;
+
+	if (first)
+	{
+		p = first;
+		curr = first;
+		first = last;
+		last = curr;
+		q = NULL;
+		while (first != p)
+		{
+			curr = p->next;
+			p->next = q;
+			q = p;
+			p = curr;
+		}
+		p->next = q;
+	}
+}
+
+int main()
+{
+
+	return 0;
+}
