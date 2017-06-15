@@ -1,22 +1,3 @@
-/**
-Terminologies used in Trees:
-Root - The top node in a tree.
-Parent - The converse notion of a child.
-Siblings - Nodes with the same parent.
-Descendant - A node reachable by repeated proceeding from parent to child.
-Ancestor - A node reachable by repeated proceeding from child to parent.
-Leaf - A node with no children.
-Internal node - A node with at least one child.
-External node - A node with no children.
-Degree - Number of sub trees of a node.
-Edge - Connection between one node to another.
-Path - A sequence of nodes and edges connecting a node with a descendant.
-Level - The level of a node is defined by 1 + (the number of connections between the node and the root).
-Height of node - The height of a node is the number of edges on the longest downward path between that node and a leaf.
-Height of tree - The height of a tree is the height of its root node.
-Depth - The depth of a node is the number of edges from the node to the tree's root node.
-Forest - A forest is a set of n >= 0 disjoint trees.
-**/
 #include <iostream>
 #include <cstdio>
 #include <algorithm>
@@ -244,7 +225,7 @@ void BST::popMin()
 	}
 	if (parent)
 		parent->left = tmp->right;
-	else /// in case when root has no left subtree, i.e. root is the minimum element in the tree
+	else 
 		root = tmp->right;
 
 	delete tmp;
@@ -269,7 +250,7 @@ void BST::popMax()
 	}
 	if (parent)
 		parent->right = tmp->left;
-	else /// in case when root has no right subtree, i.e. root is the maximum element in the tree
+	else 
 		root = tmp->left;
 
 	delete tmp;
@@ -536,21 +517,21 @@ int main()
 	T4.getElOnLevelK(depthOfTree);
 	//Task 3
 	BST T,T1,T2;
-	//ne e balansirano
+	
 	T.push(4);
 	T.push(5);
 	T.push(8);
 	T.push(10);
 	T.push(13);
 
-	//balansirano
+	
 	T1.push(10);
 	T1.push(6);
 	T1.push(15);
 	T1.push(11);
 	T1.push(18);
 	
-	//idealno balansirano
+
 	T2.push(10);
 	T2.push(6);
 	T2.push(15);
